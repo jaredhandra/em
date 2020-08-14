@@ -10,6 +10,9 @@
       Select a Manufacturer from the list.
       <q-list id="manufacturer-list" bordered separator>
         <q-item
+          @click="setManufacturer(manufacturer.id)"
+          :active="selectedManufacturer === manufacturer.id"
+          active-class="bg-grey-4 text-grey-9"
           clickable
           v-ripple
           v-for="manufacturer in manufacturers"
@@ -23,6 +26,7 @@
       </q-list>
       <q-stepper-navigation>
         <q-btn
+          :disabled="isManfacturerSelected"
           @click="
             () => {
               done1 = true;
@@ -99,12 +103,23 @@ export default {
   name: "SelectionScreen",
   data() {
     return {
-      step: 1
+      step: 1,
+      selectedManufacturer: ""
     };
   },
-  computed: mapState({
-    manufacturers: state => state.manufacturers.manufacturersList
-  })
+  computed: {
+    isManfacturerSelected() {
+      return this.selectedManufacturer === "";
+    },
+    ...mapState({
+      manufacturers: state => state.manufacturers.manufacturersList
+    })
+  },
+  methods: {
+    setManufacturer: function(id) {
+      this.selectedManufacturer = id;
+    }
+  }
 };
 </script>
 
