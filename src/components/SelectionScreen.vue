@@ -2,8 +2,8 @@
   <q-stepper v-model="step" header-nav ref="stepper" color="primary" animated>
     <q-step
       :name="1"
-      title="Select Manufacturer"
-      icon="settings"
+      title="Select manufacturer"
+      icon="storefront"
       :done="step > 1"
       :header-nav="step > 1"
     >
@@ -41,25 +41,23 @@
 
     <q-step
       :name="2"
-      title="Create an ad group"
-      caption="Optional"
-      icon="create_new_folder"
+      title="Upload sheet"
+      icon="cloud_upload"
       :done="step > 2"
       :header-nav="step > 2"
     >
-      An ad group contains one or more ads which target a shared set of
-      keywords.
-
+      Please upload the file from the manufacturer.
+      <q-file outlined v-model="uploadedFile">
+        <template v-slot:prepend>
+          <q-icon name="attach_file"></q-icon>
+        </template>
+      </q-file>
       <q-stepper-navigation>
         <q-btn
-          @click="
-            () => {
-              done2 = true;
-              step = 3;
-            }
-          "
+          :disabled="isFileUploaded"
+          @click="uploadFile()"
           color="primary"
-          label="Continue"
+          label="Process"
         />
         <q-btn
           flat
@@ -73,8 +71,8 @@
 
     <q-step
       :name="3"
-      title="Create an ad"
-      icon="add_comment"
+      title="Download files"
+      icon="cloud_download"
       :header-nav="step > 3"
     >
       Try out different ad text to see what brings in the most customers, and
@@ -98,18 +96,23 @@
 
 <script>
 import { mapState } from "vuex";
+import readFile from "../utils/fileReader";
 
 export default {
   name: "SelectionScreen",
   data() {
     return {
-      step: 1,
-      selectedManufacturer: ""
+      step: 2,
+      selectedManufacturer: "",
+      uploadedFile: null
     };
   },
   computed: {
     isManfacturerSelected() {
       return this.selectedManufacturer === "";
+    },
+    isFileUploaded() {
+      return this.uploadedFile === "";
     },
     ...mapState({
       manufacturers: state => state.manufacturers.manufacturersList
@@ -118,6 +121,12 @@ export default {
   methods: {
     setManufacturer: function(id) {
       this.selectedManufacturer = id;
+    },
+    uploadFile: function() {
+      let response = readFile(this.uploadedFile.path);
+      console.log(response);
+      // this.done2 = true;
+      // this.step = 3;
     }
   }
 };
