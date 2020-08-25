@@ -1,6 +1,8 @@
 # em (em)
 
-CSV conversion tool
+Manufacturer to Protrac CSV conversion tool
+
+I'm writing this so my dads business no longer has to manually fix spreadsheets given to them in various formats from a manufacturer in order to load prices into their POS system.
 
 ## Install the dependencies
 ```bash
