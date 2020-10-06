@@ -3,7 +3,14 @@ export default function() {
     manufacturersList: [
       {
         name: "Ideal Tools",
-        id: "ideal"
+        id: "ideal",
+        options: {
+          columns: {
+            productLine: "J",
+            itemNumber: "K"
+          },
+          sheetName: "Sheet1"
+        }
       },
       {
         name: "Klein Tools",

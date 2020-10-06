@@ -10,8 +10,8 @@
       Select a Manufacturer from the list.
       <q-list id="manufacturer-list" bordered separator>
         <q-item
-          @click="setManufacturer(manufacturer.id)"
-          :active="selectedManufacturer === manufacturer.id"
+          @click="setManufacturer(manufacturer)"
+          :active="selectedManufacturer.id === manufacturer.id"
           active-class="bg-grey-4 text-grey-9"
           clickable
           v-ripple
@@ -53,80 +53,45 @@
         </template>
       </q-file>
       <q-stepper-navigation>
-        <q-btn
-          :disabled="isFileUploaded"
-          @click="uploadFile()"
-          color="primary"
-          label="Process"
-        />
-        <q-btn
-          flat
-          @click="step = 1"
-          color="primary"
-          label="Back"
-          class="q-ml-sm"
-        />
-      </q-stepper-navigation>
-    </q-step>
-
-    <q-step
-      :name="3"
-      title="Download files"
-      icon="cloud_download"
-      :header-nav="step > 3"
-    >
-      Try out different ad text to see what brings in the most customers, and
-      learn how to enhance your ads using features like ad extensions. If you
-      run into any problems with your ads, find out how to tell if they're
-      running and how to resolve approval issues.
-
-      <q-stepper-navigation>
-        <q-btn color="primary" @click="done3 = true" label="Finish" />
-        <q-btn
-          flat
-          @click="step = 2"
-          color="primary"
-          label="Back"
-          class="q-ml-sm"
-        />
+        <q-btn @click="uploadFile()" color="primary" label="Process" />
+        <!-- <q-btn :disabled="isFileUploaded" @click="uploadFile()" color="primary" label="Process" /> -->
+        <q-btn flat @click="step = 1" color="primary" label="Back" class="q-ml-sm" />
       </q-stepper-navigation>
     </q-step>
   </q-stepper>
 </template>
 
 <script>
-import { mapState } from "vuex";
-import readFile from "../utils/fileReader";
+import { mapState, mapGetters } from "vuex";
+import { convertExcelSheet } from "../utils/excelCreation";
 
 export default {
   name: "SelectionScreen",
-  data() {
+  data () {
     return {
       step: 2,
-      selectedManufacturer: "",
+      selectedManufacturer: "ideal",
       uploadedFile: null
     };
   },
   computed: {
-    isManfacturerSelected() {
+    isManfacturerSelected () {
       return this.selectedManufacturer === "";
     },
-    isFileUploaded() {
-      return this.uploadedFile === "";
+    isFileUploaded () {
+      return this.uploadedFile === null;
     },
     ...mapState({
       manufacturers: state => state.manufacturers.manufacturersList
     })
   },
   methods: {
-    setManufacturer: function(id) {
+    setManufacturer: function (id) {
       this.selectedManufacturer = id;
     },
-    uploadFile: function() {
-      let response = readFile(this.uploadedFile.path);
-      console.log(response);
-      // this.done2 = true;
-      // this.step = 3;
+    uploadFile: function () {
+      convertExcelSheet(this.selectedManufacturer.options, this.uploadedFile);
+      this.done2 = true;
     }
   }
 };

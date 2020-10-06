@@ -12,6 +12,9 @@
   "dependencies": {
     "@quasar/extras": "^1.0.0",
     "core-js": "^3.6.5",
+    "exceljs": "^4.1.1",
+    "file-saver": "^2.0.2",
+    "jszip": "^3.5.0",
     "quasar": "^1.0.0"
   },
   "devDependencies": {
