@@ -69,8 +69,8 @@ export default {
   name: "SelectionScreen",
   data () {
     return {
-      step: 2,
-      selectedManufacturer: "ideal",
+      step: 1,
+      selectedManufacturer: "",
       uploadedFile: null
     };
   },
@@ -90,7 +90,7 @@ export default {
       this.selectedManufacturer = id;
     },
     uploadFile: function () {
-      convertExcelSheet(this.selectedManufacturer.options, this.uploadedFile);
+      convertExcelSheet(this.selectedManufacturer, this.uploadedFile);
       this.done2 = true;
     }
   }

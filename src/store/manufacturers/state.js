@@ -3,11 +3,15 @@ export default function() {
     manufacturersList: [
       {
         name: "Ideal Tools",
-        id: "ideal",
+        id: "ide",
         options: {
           columns: {
-            productLine: "J",
-            itemNumber: "K"
+            itemNumber: "J",
+            standardCost: "O",
+            standardPackQuantity: "P",
+            upcCode: "K",
+            pricedPerUOM: "N",
+            descLine1: "L"
           },
           sheetName: "Sheet1"
         }

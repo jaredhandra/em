@@ -22,21 +22,21 @@ function createZipFile(files) {
  * @param {JSON} options - the excel sheet options for the selected manufacturer
  * @param {String} file - the location of the file to be parsed
  */
-function convertExcelSheet(options, file) {
+function convertExcelSheet(manufacturer, file) {
   let workbook = new Workbook();
   let protracValues = {};
   workbook.xlsx.readFile(file.path).then(function() {
     // Get sheet by Name
-    let worksheet = workbook.getWorksheet(options.sheetName);
-
+    let worksheet = workbook.getWorksheet(manufacturer.options.sheetName);
     // Extract the data we need for protrac
-    for (const key in options.columns) {
-      if (options.columns.hasOwnProperty(key)) {
-        const columnValue = options.columns[key];
+    for (const key in manufacturer.options.columns) {
+      if (manufacturer.options.columns.hasOwnProperty(key)) {
+        const columnValue = manufacturer.options.columns[key];
         var data = worksheet.getColumn(columnValue);
         protracValues[key] = data.values;
       }
     }
+    protracValues.productLine = [manufacturer.id];
     createProtracFiles(protracValues);
   });
 }
@@ -54,8 +54,9 @@ function convertExcelSheet(options, file) {
 function createProtracFiles(protracValues) {
   const workbook = new ExcelJS.Workbook();
   const sheet = workbook.addWorksheet("Sheet 1");
-
+  
   sheet.columns = PROTRAC_COLUMNS;
+  sheet.getColumn("unitOfMeasure").values = ["ea"];
 
   for (const key in protracValues) {
     var currentColumn = sheet.getColumn(key);
