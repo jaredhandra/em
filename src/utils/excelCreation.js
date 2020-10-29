@@ -4,6 +4,7 @@ const JSZip = require("jszip");
 const { PROTRAC_COLUMNS } = require("./protracData.js");
 
 import { Workbook } from "exceljs/excel";
+import { Loading } from "quasar";
 
 function createZipFile(files) {
   // add files to zip
@@ -23,6 +24,7 @@ function createZipFile(files) {
  * @param {String} file - the location of the file to be parsed
  */
 function convertExcelSheet(manufacturer, file) {
+  Loading.show()
   let workbook = new Workbook();
   let protracValues = {};
   workbook.xlsx.readFile(file.path).then(function() {
@@ -66,6 +68,7 @@ function createProtracFiles(protracValues) {
   let file = workbook.xlsx
     .writeBuffer()
     .then(buffer => {
+      Loading.hide()
       return FileSaver.saveAs(new Blob([buffer]), "Test.xlsx");
     })
     .catch(err => console.log("Error", err));
