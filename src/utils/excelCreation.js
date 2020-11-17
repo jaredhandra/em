@@ -4,7 +4,7 @@ const JSZip = require("jszip");
 const { PROTRAC_COLUMNS } = require("./protracData.js");
 
 import { Workbook } from "exceljs/excel";
-import { Loading } from "quasar";
+import { Loading, Notify } from "quasar";
 
 function createZipFile(files) {
   // add files to zip
@@ -33,9 +33,15 @@ function convertExcelSheet(manufacturer, file) {
     // Extract the data we need for protrac
     for (const key in manufacturer.options.columns) {
       if (manufacturer.options.columns.hasOwnProperty(key)) {
-        const columnValue = manufacturer.options.columns[key];
-        var data = worksheet.getColumn(columnValue);
-        protracValues[key] = data.values;
+        try {
+          const columnValue = manufacturer.options.columns[key];
+          var data = worksheet.getColumn(columnValue);
+          protracValues[key] = data.values;
+        } catch {
+          Loading.hide()
+          Notify.create('Column not found')
+          throw new Error("Column not found")
+        }
       }
     }
     protracValues.productLine = [manufacturer.id];

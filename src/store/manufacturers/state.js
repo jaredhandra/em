@@ -17,12 +17,14 @@ export default function() {
         }
       },
       {
-        name: "Klein Tools",
-        id: "klein"
-      },
-      {
-        name: "Eaton",
-        id: "eaton"
+        name: "IPEX",
+        id: "ipex",
+        options: {
+          columns: {
+
+          },
+          sheetName: "Sheet1"
+        }
       }
     ]
   };
