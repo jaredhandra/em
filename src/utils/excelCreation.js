@@ -30,18 +30,17 @@ function convertExcelSheet(manufacturer, file) {
   workbook.xlsx.readFile(file.path).then(function() {
     // Get sheet by Name
     let worksheet = workbook.getWorksheet(manufacturer.options.sheetName);
+    let columns = manufacturer.options.columns
+
     // Extract the data we need for protrac
-    for (const key in manufacturer.options.columns) {
-      if (manufacturer.options.columns.hasOwnProperty(key)) {
-        try {
-          const columnValue = manufacturer.options.columns[key];
-          var data = worksheet.getColumn(columnValue);
-          protracValues[key] = data.values;
-        } catch {
-          Loading.hide()
-          Notify.create('Column not found')
-          throw new Error("Column not found")
-        }
+    for (const column of columns) {
+      try {
+        var data = worksheet.getColumn(column.columnLetter);
+        protracValues[column.columnName] = data.values;
+      } catch {
+        Loading.hide()
+        Notify.create('Column not found')
+        throw new Error("Column not found")
       }
     }
     protracValues.productLine = [manufacturer.id];
@@ -63,6 +62,8 @@ function createProtracFiles(protracValues) {
   const workbook = new ExcelJS.Workbook();
   const sheet = workbook.addWorksheet("Sheet 1");
   
+  // add all of the protrac columns even if we don't have values for them
+  // protrac requires all columns
   sheet.columns = PROTRAC_COLUMNS;
   sheet.getColumn("unitOfMeasure").values = ["ea"];
 

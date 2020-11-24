@@ -5,14 +5,32 @@ export default function() {
         name: "Ideal Tools",
         id: "ide",
         options: {
-          columns: {
-            itemNumber: "J",
-            standardCost: "O",
-            standardPackQuantity: "P",
-            upcCode: "K",
-            pricedPerUOM: "N",
-            descLine1: "L"
-          },
+          columns: [
+            {
+              columnName: "itemNumber",
+              columnLetter: "J"
+            },
+            {
+              columnName: "standardCost",
+              columnLetter: "O"
+            },
+            {
+              columnName: "standardPackQuantity",
+              columnLetter: "P"
+            },
+            {
+              columnName: "upcCode",
+              columnLetter: "K"
+            },
+            {
+              columnName: "pricedPerUOM",
+              columnLetter: "N"
+            },
+            {
+              columnName: "descLine1",
+              columnLetter: "L"
+            }
+          ],
           sheetName: "Sheet1"
         }
       },
@@ -20,9 +38,12 @@ export default function() {
         name: "IPEX",
         id: "ipex",
         options: {
-          columns: {
-
-          },
+          columns: [
+            {
+              columnName: "descLine1",
+              columnLetter: "L"
+            }
+          ],
           sheetName: "Sheet1"
         }
       }
